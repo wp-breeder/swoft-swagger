@@ -17,7 +17,7 @@ use Swoft\Helper\ProcessHelper;
 class SwaggerCommand
 {
 
-    private static $version = 'dev-master';
+    private static $version = '1.0.0';
     /**
      * @return array
      */
