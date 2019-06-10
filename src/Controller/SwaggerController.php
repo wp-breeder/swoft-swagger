@@ -15,6 +15,11 @@ use Swoft\Http\Message\Server\Response;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Http\Server\Bean\Annotation\RequestMethod;
+use function alias;
+use function is_dir;
+use function current;
+use function json_decode;
+use function OpenApi\scan;
 
 /**
  * Class SwaggerController
@@ -34,14 +39,14 @@ class SwaggerController
         $isEnable = App::getAppProperties()->get('server.server.autoSwagger', true);
         if ((int)$isEnable === 1) {
             $projectPath = App::getAlias('@root');
-            $openapi = \OpenApi\scan($projectPath, ['exclude' =>
+            $openapi = scan($projectPath, ['exclude' =>
                 [
                     $projectPath . "/vendor",
                     $projectPath . "/test",
                     $projectPath . "/tests",
                 ]
             ]);
-            return \json_decode($openapi->toJson(), true);
+            return json_decode($openapi->toJson(), true);
         } else {
             throw new RuntimeException("Please open the generated document");
         }
@@ -57,7 +62,7 @@ class SwaggerController
     public function showDoc(Request $request, Response $response): Response
     {
         $isEnable = App::getAppProperties()->get('server.server.autoSwagger', true);
-        if (\is_dir(\alias('@root/public/swagger')) && (int)$isEnable === 1) {
+        if (is_dir(alias('@root/public/swagger')) && (int)$isEnable === 1) {
             //return html
             $content = self::getContent('@root/public/swagger/index.html');
             $response = self::setMimeType($content, $request, $response);
@@ -163,6 +168,6 @@ class SwaggerController
      */
     private static function getContent($path)
     {
-        return file_get_contents(\alias($path));
+        return file_get_contents(alias($path));
     }
 }

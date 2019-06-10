@@ -9,7 +9,7 @@
 1. composer command
 
 ```shell
-     composer require wp-breeder/swoft-swagger:dev-master 
+     composer require wp-breeder/swoft-swagger
 ```
 
 ### 快速开始

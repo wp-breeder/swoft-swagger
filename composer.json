@@ -1,43 +1,44 @@
 {
-    "name": "wp-breeder/swoft-swagger",
-    "type": "library",
-    "license": "Apache-2.0",
-    "keywords": [
-        "php",
-        "swoole",
-        "swoft",
-        "api doc",
-        "swagger"
-    ],
-    "description": "swagger component for swoft",
-    "authors": [
-        {
-            "name": "wp-breeder",
-            "email": "wp_breeder@163.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Swoft\\Swagger\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "SwoftTest\\Swagger\\": "tests"
-        }
-    },
-    "require": {
-        "php": ">=7.0",
-        "swoft/console": "^1.0",
-        "swoft/framework": "^1.0.24",
-        "zircote/swagger-php": "^3.0"
-    },
-    "require-dev": {
-        "swoft/swoole-ide-helper": "dev-master",
-        "phpunit/phpunit": "^5.7",
-        "swoft/http-server":"^1.0"
-    },
-    "scripts": {
-        "test": "./vendor/bin/phpunit -c phpunit.xml"
-    }
+	"name": "wp-breeder/swoft-swagger",
+	"type": "library",
+	"license": "Apache-2.0",
+	"keywords": [
+		"php",
+		"swoole",
+		"swoft",
+		"api doc",
+		"swagger"
+	],
+	"description": "swagger component for swoft",
+	"authors": [
+		{
+			"name": "wp-breeder",
+			"email": "wp_breeder@163.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Swoft\\Swagger\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"SwoftTest\\Swagger\\": "tests"
+		}
+	},
+	"require": {
+		"php": ">=7.0",
+		"ext-json": "*",
+		"swoft/console": "^1.0",
+		"swoft/framework": "^1.0.24",
+		"zircote/swagger-php": "^3.0"
+	},
+	"require-dev": {
+		"swoft/swoole-ide-helper": "dev-master",
+		"phpunit/phpunit": "^5.7",
+		"swoft/http-server": "^1.0"
+	},
+	"scripts": {
+		"test": "./vendor/bin/phpunit -c phpunit.xml"
+	}
 }
