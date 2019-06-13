@@ -20,7 +20,7 @@ use function OpenApi\scan;
 /**
  * Class SwaggerController
  *
- * @Controller(prefix="/swagger/")
+ * @Controller(prefix="/__swagger/")
  *
  * @since 2.0
  */
@@ -30,24 +30,18 @@ class SwaggerController
      * generator openapi json
      * @RequestMapping(route="api-json", method=RequestMethod::GET)
      * @return array
-     * @throws HttpServerException
      */
     public function genDocJson(): array
     {
-        $isEnable = (int)\env('AUTO_SWAGGER', 1);
-        if ((int)$isEnable === 1) {
-            $projectPath = Swoft::getAlias('@base');
-            $openapi = scan($projectPath, ['exclude' =>
-                [
-                    $projectPath . "/vendor",
-                    $projectPath . "/test",
-                    $projectPath . "/tests",
-                ]
-            ]);
-            return json_decode($openapi->toJson(), true);
-        } else {
-            throw new HttpServerException("Please open the generated document");
-        }
+        $projectPath = Swoft::getAlias('@base');
+        $openapi = scan($projectPath, ['exclude' =>
+            [
+                $projectPath . "/vendor",
+                $projectPath . "/test",
+                $projectPath . "/tests",
+            ]
+        ]);
+        return json_decode($openapi->toJson(), true);
     }
 
     /**
@@ -55,15 +49,14 @@ class SwaggerController
      * @RequestMapping(route="docs", method=RequestMethod::GET)
      * @param Request $request
      * @param Response $response
-     * @return Response
+     * @return Response|void
      * @throws ContainerException
      * @throws ReflectionException
      * @throws HttpServerException
      */
-    public function showDoc(Request $request, Response $response): Response
+    public function showDoc(Request $request, Response $response)
     {
-        $isEnable = (int)\env('AUTO_SWAGGER', 1);
-        if (is_dir(alias('@base/public/swagger')) && (int)$isEnable === 1) {
+        if (is_dir(alias('@base/public/swagger'))) {
             //return html
             $content = self::getContent('@base/public/swagger/index.html');
             $response = self::setMimeType($content, $request, $response);

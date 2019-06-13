@@ -7,12 +7,18 @@
 ### 安装
 
 1. composer command
-
 ```shell
      composer require wp-breeder/swoft-swagger:dev-master
 ```
 
 > swoft-1.x 请查看 [1.0.0](https://github.com/wp-breeder/swoft-swagger/tree/1.x) 版本文档
+
+2. `AUTO_SWAGGER` 用来控制该组件是否启用 
+
+```shell
+    # 在 .env 中添加 auto swagger 开启swagger组件
+    AUTO_SWAGGER=true
+```
 
 
 ### 用法
@@ -24,8 +30,8 @@
 ```shell
 php bin/swoft swagger:publish swoft/swagger
 ```
-2. `openapi json` 地址: `http://{ip}:{host}/swagger/api-json`, 该接口会动态生成最新接口 `json`, 方便 `Swagger UI` 渲染接口文档
-> 注意：本项目会占用 /swagger/api-json 和 /swagger/docs 两个路由
+2. `openapi json` 地址: `http://{ip}:{host}/__swagger/api-json`, 该接口会动态生成最新接口 `json`, 方便 `Swagger UI` 渲染接口文档
+> 注意：本项目会占用 /__swagger/api-json 和 /__swagger/docs 两个路由
 
 3. 在项目的除了`/project/to/path/vendor`,`/project/to/path/test`,`/project/to/path/tests`的任何地方开始编写接口文档，即可生成 `openapi json`, 如需在本项目访问接口文档(已发布静态资源), 则访问 `http://{ip}:{host}/swagger/docs`
 

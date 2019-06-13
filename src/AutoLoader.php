@@ -1,11 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * User: WP
- * Date: 2019/6/12
- * Time: 15:42
- */
-
 namespace WpBreeder\Swagger;
 
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -62,7 +56,7 @@ class AutoLoader extends SwoftComponent
      */
     public function enable(): bool
     {
-        return (int)\env('AUTO_SWAGGER', 0) > 0;
+        return (int)\env("AUTO_SWAGGER", 0) > 0;
     }
 
     /**
