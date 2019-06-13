@@ -9,32 +9,11 @@
 1. composer command
 
 ```shell
-     composer require wp-breeder/swoft-swagger
+     composer require wp-breeder/swoft-swagger:dev-master
 ```
 
-### 快速开始
+> swoft-1.x 请查看 [1.0.0](https://github.com/wp-breeder/swoft-swagger/tree/1.x) 版本文档
 
-1. 在 `/project-to-path/config/properties/app` 中添加配置:
-
-```php
-    // 指定扫描组件
-    'components' => [
-            'custom' => [
-                'Swoft\\Swagger\\'
-            ],
-        ],
-```
-
-2. 在 `/project-to-path/config/server` 中添加配置:
-
-```php
-    //for swoft swagger component
-    'server' => [
-            //code ...
-            // autoSwagger 配置是否开启swagger文档，默认为true
-            'autoSwagger' => env('AUTO_SWAGGER', true),
-        ],
-```
 
 ### 用法
 
