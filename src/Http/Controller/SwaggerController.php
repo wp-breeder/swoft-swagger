@@ -1,30 +1,28 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: WP
- * Date: 2018/11/21
- * Time: 10:35
- */
+<?php declare(strict_types=1);
 
-namespace Swoft\Swagger\Controller;
+namespace WpBreeder\Swagger\Http\Controller;
 
-use Swoft\App;
-use Swoft\Exception\RuntimeException;
-use Swoft\Http\Message\Server\Request;
-use Swoft\Http\Message\Server\Response;
-use Swoft\Http\Server\Bean\Annotation\Controller;
-use Swoft\Http\Server\Bean\Annotation\RequestMapping;
-use Swoft\Http\Server\Bean\Annotation\RequestMethod;
+use ReflectionException;
+use Swoft;
+use Swoft\Bean\Exception\ContainerException;
+use Swoft\Http\Message\Request;
+use Swoft\Http\Message\Response;
+use Swoft\Http\Server\Annotation\Mapping\Controller;
+use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoft\Http\Server\Annotation\Mapping\RequestMethod;
+use Swoft\Http\Server\Exception\HttpServerException;
 use function alias;
-use function is_dir;
 use function current;
+use function is_dir;
 use function json_decode;
 use function OpenApi\scan;
 
 /**
  * Class SwaggerController
- * @package Swoft\Swagger\Controller
+ *
  * @Controller(prefix="/swagger/")
+ *
+ * @since 2.0
  */
 class SwaggerController
 {
@@ -32,13 +30,13 @@ class SwaggerController
      * generator openapi json
      * @RequestMapping(route="api-json", method=RequestMethod::GET)
      * @return array
-     * @throws RuntimeException
+     * @throws HttpServerException
      */
     public function genDocJson(): array
     {
-        $isEnable = App::getAppProperties()->get('server.server.autoSwagger', true);
+        $isEnable = (int)\env('AUTO_SWAGGER', 1);
         if ((int)$isEnable === 1) {
-            $projectPath = App::getAlias('@root');
+            $projectPath = Swoft::getAlias('@base');
             $openapi = scan($projectPath, ['exclude' =>
                 [
                     $projectPath . "/vendor",
@@ -48,7 +46,7 @@ class SwaggerController
             ]);
             return json_decode($openapi->toJson(), true);
         } else {
-            throw new RuntimeException("Please open the generated document");
+            throw new HttpServerException("Please open the generated document");
         }
     }
 
@@ -58,17 +56,20 @@ class SwaggerController
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws ContainerException
+     * @throws ReflectionException
+     * @throws HttpServerException
      */
     public function showDoc(Request $request, Response $response): Response
     {
-        $isEnable = App::getAppProperties()->get('server.server.autoSwagger', true);
-        if (is_dir(alias('@root/public/swagger')) && (int)$isEnable === 1) {
+        $isEnable = (int)\env('AUTO_SWAGGER', 1);
+        if (is_dir(alias('@base/public/swagger')) && (int)$isEnable === 1) {
             //return html
-            $content = self::getContent('@root/public/swagger/index.html');
+            $content = self::getContent('@base/public/swagger/index.html');
             $response = self::setMimeType($content, $request, $response);
             return $response;
         } else {
-            throw new RuntimeException("Please publish static resources first");
+            throw new HttpServerException("Please publish static resources first");
         }
     }
 
@@ -78,10 +79,12 @@ class SwaggerController
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws ContainerException
+     * @throws ReflectionException
      */
     public function swaggerCss(Request $request, Response $response): Response
     {
-        $content = self::getContent('@root/public/swagger/swagger-ui.css');
+        $content = self::getContent('@base/public/swagger/swagger-ui.css');
         $response = self::setMimeType($content, $request, $response);
         return $response;
     }
@@ -92,10 +95,12 @@ class SwaggerController
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws ContainerException
+     * @throws ReflectionException
      */
     public function swaggerBundle(Request $request, Response $response): Response
     {
-        $content = self::getContent('@root/public/swagger/swagger-ui-bundle.js');
+        $content = self::getContent('@base/public/swagger/swagger-ui-bundle.js');
         $response = self::setMimeType($content, $request, $response);
         return $response;
     }
@@ -106,10 +111,12 @@ class SwaggerController
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws ContainerException
+     * @throws ReflectionException
      */
     public function swaggerStandalonePreset(Request $request, Response $response): Response
     {
-        $content = self::getContent('@root/public/swagger/swagger-ui-standalone-preset.js');
+        $content = self::getContent('@base/public/swagger/swagger-ui-standalone-preset.js');
         $response = self::setMimeType($content, $request, $response);
         return $response;
     }
@@ -120,10 +127,12 @@ class SwaggerController
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws ContainerException
+     * @throws ReflectionException
      */
     public function swaggerIco32(Request $request, Response $response): Response
     {
-        $content = self::getContent('@root/public/swagger/favicon-32x32.png');
+        $content = self::getContent('@base/public/swagger/favicon-32x32.png');
         $response = self::setMimeType($content, $request, $response);
         return $response;
     }
@@ -134,10 +143,12 @@ class SwaggerController
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws ContainerException
+     * @throws ReflectionException
      */
     public function swaggerIco16(Request $request, Response $response): Response
     {
-        $content = self::getContent('@root/public/swagger/favicon-16x16.png');
+        $content = self::getContent('@base/public/swagger/favicon-16x16.png');
         $response = self::setMimeType($content, $request, $response);
         return $response;
     }
@@ -145,9 +156,11 @@ class SwaggerController
     /**
      * set mime type
      * @param $content
-     * @param Response $response
      * @param Request $request
+     * @param Response $response
      * @return Response
+     * @throws ContainerException
+     * @throws ReflectionException
      */
     private static function setMimeType($content, Request $request, Response $response): Response
     {

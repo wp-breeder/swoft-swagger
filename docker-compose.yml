@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  swoft:
+    image: "swoft:1.1"
+    build:
+      context: ./
+      dockerfile: Dockerfile-swoft
+    container_name: swoft-swagger
+    ports:
+      - "8004:18306"
+    volumes:
+      - ./:/var/www:rw
+    stdin_open: true
+    tty: true
+    privileged: true
+    entrypoint:
+      - sh
+      - -c
+      - |
+        if [ ! -d "vendor" ];then
+        composer install
+        composer dump-autoload
+        composer clearcache
+        fi
+        php test/bootstrap.php http:start
+
+

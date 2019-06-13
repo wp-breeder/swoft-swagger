@@ -16,29 +16,34 @@
 			"email": "wp_breeder@163.com"
 		}
 	],
-	"autoload": {
-		"psr-4": {
-			"Swoft\\Swagger\\": "src/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"SwoftTest\\Swagger\\": "tests"
-		}
-	},
 	"require": {
 		"php": ">=7.0",
 		"ext-json": "*",
-		"swoft/console": "^1.0",
-		"swoft/framework": "^1.0.24",
+		"swoft/framework": "~2.0.1",
 		"zircote/swagger-php": "^3.0"
 	},
 	"require-dev": {
 		"swoft/swoole-ide-helper": "dev-master",
-		"phpunit/phpunit": "^5.7",
-		"swoft/http-server": "^1.0"
+		"phpunit/phpunit": "^7.5",
+		"swoft/http-server": "~2.0.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"WpBreeder\\Swagger\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"WpBreederTest\\Swagger\\Testing\\": "test/testing/"
+		}
 	},
 	"scripts": {
 		"test": "./vendor/bin/phpunit -c phpunit.xml"
+	},
+	"repositories": {
+		"packagist": {
+			"type": "composer",
+			"url": "https://packagist.laravel-china.org"
+		}
 	}
 }

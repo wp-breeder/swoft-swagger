@@ -3,5 +3,6 @@ composer.lock
 *.cache
 *.log
 .phpstorm.meta.php
-tests/public
+test/public
+test/runtime
 .idea
